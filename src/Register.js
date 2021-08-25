@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { getRequestHeader } from './service/RequestService'
 import axios from 'axios';
 
-const registerUrl = 'https://mmz3jrf2n5.execute-api.sa-east-1.amazonaws.com/dev/register'
+const registerUrl = 'https://l7cevyfji1.execute-api.sa-east-1.amazonaws.com/dev/register'
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -12,20 +13,10 @@ const Register = () => {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        console.log('submit button is pressed');
-        console.log(name);
-        console.log(username);
-        console.log(email);
-        console.log(password);
+  
         if(name === '' || username.trim() === '' || email.trim() === '' || password.trim() === '') {
             setMessage('Campos nome, nome de usuário, e-mail e senha são obrigatórios, favor preencher!');
             return
-        }
-
-        const requestConfig = {
-            headers: {
-                'x-api-key': '6uWwq7jofz75Ij3QeamBuayGUQQQnNNs9q4wNeXD'
-            }
         }
 
         const requestBody = {
@@ -35,7 +26,7 @@ const Register = () => {
             password: password
         }
 
-        axios.post(registerUrl, requestBody, requestConfig).then(response => {
+        axios.post(registerUrl, requestBody, getRequestHeader()).then(response => {
             setMessage('Registrado com sucesso');
         }).catch(error => {
             setMessage("Ocorreu erro ao fazer o registro")
@@ -55,7 +46,7 @@ const Register = () => {
                 Nome de Usuário: <input type="text" value={username} onChange={event => setUsername(event.target.value)} /><br/>
                 E-mail: <input type="email" value={email} onChange={event => setEmail(event.target.value)} /><br/>
                 Senha: <input type="password" value={password} onChange={event => setPassword(event.target.value)} />
-                <input type="submit" value="Register" />
+                <input type="submit" value="Cadastro" />
             </form>
             {message && <p className="message">{message}</p>}
         </div>

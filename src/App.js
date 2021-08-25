@@ -14,6 +14,7 @@ function App() {
           <NavLink activeClassName="active" to="/plans">Planos</NavLink>
           <NavLink activeClassName="active" to="/register">Cadastro</NavLink>
           <NavLink activeClassName="active" to="/login">Login</NavLink>
+          <NavLink activeClassName="active" to="/user">Usuário</NavLink>
         </div>
         <div>
           <Switch>
@@ -21,6 +22,7 @@ function App() {
             <Route path="/plans" component={Plans} />
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
+            <Route path="/user" component={Login} />
           </Switch>
         </div>
       </BrowserRouter>
