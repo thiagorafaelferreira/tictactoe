@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './css/Register.css'
 import { getRequestHeader } from './service/RequestService'
 import axios from 'axios';
 
@@ -39,7 +40,7 @@ const Register = () => {
     }
 
     return (
-        <div>
+        <div className="register">
             <h1>Cadastre-se</h1>
             <form onSubmit={submitHandler}> 
                 Nome: <input type="text" value={name} onChange={event => setName(event.target.value)} /><br/>

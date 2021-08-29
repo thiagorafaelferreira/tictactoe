@@ -1,0 +1,42 @@
+.header {
+  background-color: var(--third-color);
+  color: var(--second-color);
+  height: 15vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: var(--padding-header-size);
+  padding-right: var(--padding-header-size);
+}
+
+.header a {
+  text-decoration: none;
+  color:  var(--second-color);
+  font-size: 30px;
+  margin-right: 20px;
+}
+
+.selected {
+  color:  var(--first-color);
+}
+
+.header a:hover {
+  color:  var(--first-color);
+}
+
+.message {
+  color: red;
+  font-size: 0.7em;
+}
+
+.logo {
+  display: inline-block;
+}
+
+.menu {
+  display: inline-block;
+}
+
+.logo-img {
+  height: 100px;
+}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { setUserSession } from './service/AuthService'
 import { getRequestHeader } from './service/RequestService'
 import axios from 'axios';
+import './css/Login.css'
 
 const loginUrl = 'https://l7cevyfji1.execute-api.sa-east-1.amazonaws.com/dev/login'
 
@@ -20,7 +21,8 @@ const Login = (props) => {
 
         axios.post(loginUrl, requestBody, getRequestHeader()).then(response => {
             setMessage('Efetuado login com sucesso');
-            setUserSession(response.data.user, response.data.token);
+            console.log(response);
+            setUserSession(response.data.username, response.data.token);
             props.history.push('/user')
         }).catch(error => {
             setMessage("Ocorreu erro ao fazer o login")
@@ -28,7 +30,7 @@ const Login = (props) => {
     }
 
     return (
-        <div>
+        <div className="login">
             <h1>Login</h1>
             <form onSubmit={submitHandler} >
                 Usuário: <input type="text" value={username} onChange={event => setUsername(event.target.value)} />
