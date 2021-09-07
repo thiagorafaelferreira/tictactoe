@@ -1,6 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import  { BrowserRouter, NavLink, Route, Switch } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
 import './css/App.css';
 import './css/Global.css';
@@ -19,9 +21,10 @@ import { getRequestHeader } from './service/RequestService'
 
 const verifyUrl = "https://l7cevyfji1.execute-api.sa-east-1.amazonaws.com/dev/verify";
 
-function App() {
+function App(props) {
 
   const [isAuthenticating, setAuthenticating] = useState(true);
+  const [user] = useState(getUser())
 
   useEffect(() => {
     const token = getToken();
@@ -64,7 +67,8 @@ function App() {
             <NavLink activeClassName="active" to="/plans">Planos</NavLink>
             <NavLink activeClassName="active" to="/register">Cadastro</NavLink>
             <NavLink activeClassName="active" to="/login">Login</NavLink>
-            <NavLink activeClassName="active" to="/user">Usuário</NavLink>
+            <NavLink activeClassName="active" to="/user">{ user !== undefined ? user : 'Usuário'}</NavLink>
+            {!isAuthenticating && token && <NavLink activeClassName="active" to="/signout"><FontAwesomeIcon icon={faSignOutAlt} /></NavLink>}
           </div>
         </div>
         <div>
@@ -74,6 +78,7 @@ function App() {
             <PublicRoute path="/register" component={Register} />
             <PublicRoute path="/login" component={Login} />
             <PrivateRoute path="/user" component={User} />
+            
           </Switch>
         </div>
       </BrowserRouter>
