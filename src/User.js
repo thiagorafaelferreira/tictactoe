@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './css/User.css'
+import './css/User.css';
 import { getUser, resetSession,getToken } from './service/AuthService'
 import { getCustomRequestHeader } from './service/RequestService'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,9 +16,12 @@ const User = (props) => {
     const [ name, setName ] = useState(user !== 'undefined' && user ? user : '');
     const [ categories, setCategories ] = useState([]);
     const [ cards, setCards ] = useState([]);
-    const [ newCard, setNewCard ] = useState(false);
+    const [ newCardCategory, setNewCardCategory ] = useState(false);
+    const [ newCardQuestion, setNewCardQuestion ] = useState(false);
     const [ question, setQuestion ] = useState('');
     const [ answear, setAnswear ] = useState('');
+    const [ category, setCategory ] = useState('');
+    const [ categoryTitle, setCategoryTitle ] = useState('');
 
     const handleLogout = () => {
         resetSession();
@@ -29,24 +32,33 @@ const User = (props) => {
 
     }
 
+    const handleAddCardCategory = () => {
+
+    }
+
     const handleReturn = () => {
       setCards([])
-      handleCancel();
+      handleCancelQuestion();
       searchCategories();
     }
 
-    const handleCancel = () => {
-      setNewCard(false);
+    const handleCancelQuestion = () => {
+      setNewCardQuestion(false);
       setAnswear('')
       setQuestion('')
     }
 
-    const handlerQuestions = (id_category) => {
+    const handleCancelCategory = () => {
+      setNewCardCategory(false);
+      setCategory('')
+    }
+
+    const handlerQuestions = (category) => {
       if (categories) {
-        console.log(id_category)
-        axios.get(quastionsUrl+id_category, customRequest).then(response => {
+        axios.get(quastionsUrl+category.id_category, customRequest).then(response => {
           setCards(response.data)
           setCategories([])
+          setCategoryTitle(category.category_name)
           console.log("buscou as questoes")
         }).catch(() => {
           console.log("nao buscou as questoes")
@@ -55,7 +67,7 @@ const User = (props) => {
     }
 
     const categoryElement = (category) => {
-      return <div id={category.id_category} className="category-element" onClick={() => handlerQuestions(category.id_category)}>
+      return <div id={category.id_category} className="category-element" onClick={() => handlerQuestions(category)}>
         {category.category_name.toUpperCase()}
       </div>
     }
@@ -76,33 +88,48 @@ const User = (props) => {
       setCategories([]);
       setCards([]);
       searchCategories();
-      }, []);
+      }, [setNewCardCategory, setNewCardQuestion]);
 
     return (
         <div className="user">
-            {categories.length > 0 && <h2>Categorias</h2>}
-            {categories.length > 0 && <div>{ categories.map(categoryElement)}</div>}
+            {categories.length > 0 && 
+              <div>
+                <h2>Categorias</h2>
+                <FontAwesomeIcon className="awesome-color" title="Acionar cartão de categoria" icon={faPlusCircle} onClick={() => setNewCardCategory(true)} />
+              </div>
+            }
+            {newCardCategory && <div>
+                <fieldset>
+                  <legend>Nova categoria</legend>
+                  Categoria: <input type="text" name="question" className="input-cards" value={category} onChange={(e) => setCategory(e.value)} />
+                  <br/>
+                  <input type="submit" name="cancelar" value="Cancelar" className="input-submit input-submit-cancel" onClick={handleCancelCategory}/>
+                  <input type="submit" name="adicionar" value="Adicionar" className="input-submit input-submit-agree" conClick={handleAddCardCategory}/>
+                </fieldset>
+              </div>
+            }
+            {!newCardCategory && categories.length > 0 && <div>{ categories.map(categoryElement)}</div>}
 
             {cards.length > 0 && 
               <div>
-                <h2>Questões</h2>
+                <h2>Questões \ {categoryTitle}</h2>
                 <FontAwesomeIcon className="awesome-color" title="Voltar" icon={faArrowAltCircleLeft} onClick={handleReturn} />
-                <FontAwesomeIcon className="awesome-color" title="Acionar card" icon={faPlusCircle} onClick={() => setNewCard(true)} />
+                <FontAwesomeIcon className="awesome-color" title="Acionar cartão de questão" icon={faPlusCircle} onClick={() => setNewCardQuestion(true)} />
               </div>
             }
-            {newCard && <div>
+            {newCardQuestion && <div>
                 <fieldset>
                   <legend>Novo cartão</legend>
                   Pergunta: <input type="text" name="question" className="input-cards" value={question} onChange={(e) => setQuestion(e.value)} />
                   <br/>
                   Resposta: <input type="text" name="answear" className="input-cards" value={answear} onChange={(e) => setAnswear(e.value)} />
                   <br/>
-                  <input type="submit" name="cancelar" value="Cancelar" className="input-submit input-submit-cancel" onClick={handleCancel}/>
+                  <input type="submit" name="cancelar" value="Cancelar" className="input-submit input-submit-cancel" onClick={handleCancelQuestion}/>
                   <input type="submit" name="adicionar" value="Adicionar" className="input-submit input-submit-agree" conClick={handleAddCard}/>
                 </fieldset>
               </div>
             }
-            {cards.length > 0 && <div>{cards.map(cardElement)}</div>}
+            {!newCardQuestion && cards.length > 0 && <div>{cards.map(cardElement)}</div>}
         </div>
     )
 }
