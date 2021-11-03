@@ -1,3 +1,6 @@
+# Game is runing and available to be played on
+Game Tic Tac Toe [Play Game](https://tictactoe-br.herokuapp.com/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
